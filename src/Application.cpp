@@ -15,10 +15,11 @@ void processing_task(void *param)
   while (true)
   {
     application->process_samples();
+    vTaskDelay(1);
   }
 }
 
-Application::Application(TFT_eSPI &display)
+Application::Application(TFT_eSPI &display, FT62XXTouchScreen& touchScreen) : m_touchScreen(touchScreen)
 {
   m_window_size = WINDOW_SIZE;
   m_sample_buffer = (int16_t *)malloc(sizeof(int16_t) * WINDOW_SIZE);
@@ -29,17 +30,16 @@ Application::Application(TFT_eSPI &display)
 #else
   m_sampler = new ADCSampler(ADC_UNIT_1, ADC_MIC_CHANNEL, i2s_adc_config);
 #endif
-  pinMode(GPIO_BUTTON, INPUT_PULLUP);
 }
 
 void Application::begin()
 {
+  // start sampling from i2s device
+  m_sampler->start();
+
   // set up the processing
   TaskHandle_t processing_task_handle;
   xTaskCreatePinnedToCore(processing_task, "Processing Task", 4096, this, 2, &processing_task_handle, 0);
-
-  // start sampling from i2s device
-  m_sampler->start();
 }
 
 void Application::process_samples()
@@ -52,7 +52,8 @@ void Application::process_samples()
 
 void Application::loop()
 {
-  if (digitalRead(GPIO_BUTTON) == 0)
+  TouchPoint touchPos = m_touchScreen.read();
+  if (touchPos.touched)
   {
     m_ui->toggle_display();
     // delay to allow for the touch to finish

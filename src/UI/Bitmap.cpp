@@ -6,6 +6,7 @@ Bitmap::Bitmap(int width, int height)
   this->width = width;
   this->height = height;
   pixels = (uint16_t *)malloc(width * height * sizeof(uint16_t));
+  assert(pixels != NULL);
   memset(pixels, 0, width * height * sizeof(uint16_t));
   rows = (uint16_t **)malloc(height * sizeof(uint16_t **));
   for (int i = 0; i < height; i++)

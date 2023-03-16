@@ -25,14 +25,16 @@ void I2SMEMSSampler::configureI2S()
 
 int I2SMEMSSampler::read(int16_t *samples, int count)
 {
-    // read from i2s
-    int32_t *raw_samples = (int32_t *)malloc(sizeof(int32_t) * count);
+    int32_t * raw_samples = (int32_t *)malloc(sizeof(int32_t) * count);
+    assert(raw_samples != NULL);
     size_t bytes_read = 0;
     i2s_read(m_i2sPort, raw_samples, sizeof(int32_t) * count, &bytes_read, portMAX_DELAY);
     int samples_read = bytes_read / sizeof(int32_t);
+    // log_d("samples read: %d", samples_read);
     for (int i = 0; i < samples_read; i++)
     {
-        samples[i] = (raw_samples[i] & 0xFFFFFFF0) >> 14;
+        samples[i] = (raw_samples[i] & 0xFFFFFFF0) >> 11;
+        // log_d("[%03d] 0x%02X", i, raw_samples[i]);
     }
     free(raw_samples);
     return samples_read;

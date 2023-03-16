@@ -3,9 +3,6 @@
 #include <freertos/FreeRTOS.h>
 #include <driver/i2s.h>
 
-// display toggle button
-#define GPIO_BUTTON 0
-
 // sample rate for the system
 #define SAMPLE_RATE 16000
 
@@ -20,15 +17,13 @@
 // Generally they will default to LEFT - but you may need to attach the L/R pin to GND
 #define I2S_MIC_CHANNEL I2S_CHANNEL_FMT_ONLY_LEFT
 // #define I2S_MIC_CHANNEL I2S_CHANNEL_FMT_ONLY_RIGHT
-#define I2S_MIC_SERIAL_CLOCK GPIO_NUM_26
-#define I2S_MIC_LEFT_RIGHT_CLOCK GPIO_NUM_22
-#define I2S_MIC_SERIAL_DATA GPIO_NUM_21
+#define I2S_MIC_SERIAL_CLOCK GPIO_NUM_5
+#define I2S_MIC_LEFT_RIGHT_CLOCK GPIO_NUM_25
+#define I2S_MIC_SERIAL_DATA GPIO_NUM_26
 
 // Analog Microphone Settings - ADC1_CHANNEL_7 is GPIO35
 #define ADC_MIC_CHANNEL ADC1_CHANNEL_7
 
-// i2s config for using the internal ADC
-extern i2s_config_t i2s_adc_config;
 // i2s config for reading from of I2S
 extern i2s_config_t i2s_mic_Config;
 // i2s microphone pins

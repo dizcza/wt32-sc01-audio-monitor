@@ -32,7 +32,7 @@
   class FT62XXTouchScreen {
 
     public:
-      FT62XXTouchScreen(uint16_t displayHeight, uint8_t sda, uint8_t scl) : m_displayHeight(displayHeight), m_sda(sda), m_scl(scl) {
+      FT62XXTouchScreen(uint16_t displayHeight, int sda, int scl) : m_displayHeight(displayHeight), m_sda(sda), m_scl(scl) {
       }
       
       bool begin() {
@@ -150,8 +150,8 @@
 
     private:
       uint16_t m_displayHeight;
-      uint8_t m_sda;
-      uint8_t m_scl;
+      int m_sda;
+      int m_scl;
 
       uint8_t readByteFromTouch(uint8_t reg) {
         Wire.beginTransmission(FT62XX_ADDR);

@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "I2SSampler.h"
 #include "I2SMEMSSampler.h"
-#include "ADCSampler.h"
 #include "UI/UI.h"
 #include "Processor.h"
 #include "config.h"
@@ -25,11 +24,7 @@ Application::Application(TFT_eSPI &display, FT62XXTouchScreen& touchScreen) : m_
   m_sample_buffer = (int16_t *)malloc(sizeof(int16_t) * WINDOW_SIZE);
   m_ui = new UI(display, m_window_size);
   m_processor = new Processor(m_window_size);
-#ifdef USE_I2S_MIC_INPUT
-  m_sampler = new I2SMEMSSampler(I2S_NUM_0, i2s_mic_pins, i2s_mic_Config);
-#else
-  m_sampler = new ADCSampler(ADC_UNIT_1, ADC_MIC_CHANNEL, i2s_adc_config);
-#endif
+  m_sampler = new I2SMEMSSampler(i2s_mic_pins, i2s_mic_Config);
 }
 
 void Application::begin()

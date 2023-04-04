@@ -21,7 +21,8 @@ void Spectrogram::update(float *mag)
 
 void Spectrogram::_draw(TFT_eSPI &display)
 {
+  bool swap = display.getSwapBytes();
   display.setSwapBytes(true);
   display.pushImage(x, y, bitmap->width, bitmap->height, bitmap->pixels);
-  display.setSwapBytes(false);
+  display.setSwapBytes(swap);
 }

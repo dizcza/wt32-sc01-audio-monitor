@@ -16,8 +16,8 @@ i2s_config_t i2s_mic_Config = {
 
 // i2s microphone pins
 i2s_pin_config_t i2s_mic_pins = {
-    .bck_io_num = 5,
-    .ws_io_num = 25,
+    .bck_io_num = 2,
+    .ws_io_num = 23,
     .data_out_num = I2S_PIN_NO_CHANGE,
-    .data_in_num = 26
+    .data_in_num = 4
 };

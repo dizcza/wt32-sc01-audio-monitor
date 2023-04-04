@@ -7,7 +7,7 @@
 #define SAMPLE_RATE 16000
 
 // approx 30ms of audio @ 16KHz
-#define WINDOW_SIZE 512
+#define WINDOW_SIZE 256
 
 // i2s config for reading from of I2S
 extern i2s_config_t i2s_mic_Config;

@@ -28,6 +28,9 @@ void setup()
 
   touchScreen.begin();
 
+  Wire1.begin(32, 33);
+  Wire1.setClock(400000);
+
   application = new Application(display, touchScreen);
   application->begin();
 }

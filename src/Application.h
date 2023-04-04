@@ -6,6 +6,7 @@ class UI;
 class Processor;
 class I2SSampler;
 class TFT_eSPI;
+class SDPSampler;
 
 class Application
 {
@@ -15,6 +16,7 @@ private:
   UI *m_ui;
   Processor *m_processor;
   I2SSampler *m_sampler;
+  SDPSampler *m_sdp_sampler;
   FT62XXTouchScreen& m_touchScreen;
 
   void process_samples();

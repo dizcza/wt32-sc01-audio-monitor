@@ -1,4 +1,4 @@
-#include <M5Display.h>
+#include <M5StX.h>
 #include "Application.h"
 #include "UI/UI.h"
 #include "Processor.h"
@@ -46,6 +46,8 @@ void Application::process_samples()
 
 void Application::loop()
 {
-  vTaskDelay(pdMS_TO_TICKS(1000));
-  // m_ui->toggle_display();
+  M5.BtnB.read();
+  if (M5.BtnB.wasPressed()) {
+    m_ui->toggle_display();
+  }
 }

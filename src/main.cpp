@@ -1,21 +1,19 @@
 #include <Arduino.h>
 #include <M5StX.h>
+#include <M5ez.h>
 #include "Application.h"
 
 Application *application;
 
-M5Display display = M5Display();
-
 
 void setup()
 {
-  Serial.begin(115200);
-  display.begin();
+  ez.begin();
 
   Wire1.begin(21, 22);
   Wire1.setClock(400000);
 
-  application = new Application(display);
+  application = new Application(M5.lcd);
   application->begin();
 }
 

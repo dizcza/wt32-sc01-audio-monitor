@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <algorithm>
-#include <TFT_eSPI.h>
+#include <M5Display.h>
 #include "Palette.h"
 #include "GraphicEqualiser.h"
 
@@ -46,7 +46,7 @@ void GraphicEqualiser::update(float *mag)
   }
 }
 
-void GraphicEqualiser::_draw(TFT_eSPI &display)
+void GraphicEqualiser::_draw(M5Display &display)
 {
   int x = 0;
   int x_step = int(width / (m_num_bins / 16));

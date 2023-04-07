@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <TFT_eSPI.h>
+#include <M5Display.h>
 #include "Spectrogram.h"
 #include "Bitmap.h"
 #include "Palette.h"
@@ -19,7 +19,7 @@ void Spectrogram::update(float *mag)
   }
 }
 
-void Spectrogram::_draw(TFT_eSPI &display)
+void Spectrogram::_draw(M5Display &display)
 {
   bool swap = display.getSwapBytes();
   display.setSwapBytes(true);

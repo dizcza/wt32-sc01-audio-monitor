@@ -81,6 +81,15 @@ int16_t* SDPSampler::getCapturedAudioBuffer() {
 esp_err_t SDPSampler::readSensor() {
     const int64_t systick = esp_timer_get_time();
     int16_t dp_raw = 0;
+    if (0) {
+        static int16_t dp = 0;
+        const SDPRecord record = {
+                .systime = systick,
+                .diff_pressure_raw = dp++
+        };
+        xQueueSend(xQueueRecords, &record, 0);
+        return ESP_OK;
+    }
     if (m_sensor.readMeasurement(&dp_raw, NULL, NULL)) {
         const SDPRecord record = {
                 .systime = systick,
@@ -111,7 +120,7 @@ SDPSampler::SDPSampler(int window_size, TaskHandle_t processing_task_handle) : m
 {
     m_sensor.begin();
     m_sensor.startContinuous(false);
-    xQueueRecords = xQueueCreate(100000, sizeof(SDPRecord));
+    xQueueRecords = xQueueCreate(1000, sizeof(SDPRecord));
     assert(xQueueRecords != NULL);
     xTaskCreatePinnedToCore(sdprecord_read_sensor_task, "sdp_read", 4096, this, RECORD_READ_SENSOR_PRIORITY, &m_task_read_handle, APP_CPU_NUM);
 }

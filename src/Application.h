@@ -1,11 +1,8 @@
 #pragma once
-#include "FT62XXTouchScreen.h"
-#include <driver/i2s.h>
 
 class UI;
 class Processor;
-class I2SSampler;
-class TFT_eSPI;
+class M5Display;
 class SDPSampler;
 
 class Application
@@ -15,14 +12,12 @@ private:
   int16_t *m_sample_buffer;
   UI *m_ui;
   Processor *m_processor;
-  I2SSampler *m_sampler;
   SDPSampler *m_sdp_sampler;
-  FT62XXTouchScreen& m_touchScreen;
 
   void process_samples();
 
 public:
-  Application(TFT_eSPI &display, FT62XXTouchScreen& touchScreen);
+  Application(M5Display &display);
   void begin();
   void loop();
 

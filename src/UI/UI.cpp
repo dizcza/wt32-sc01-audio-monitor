@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <TFT_eSPI.h>
+#include <M5StX.h>
 #include "UI.h"
 #include "UI/Waveform.h"
 #include "UI/Palette.h"
@@ -22,7 +22,7 @@ void drawing_task(void *param)
   }
 }
 
-UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
+UI::UI(M5Display &display, int window_size) : m_display(display)
 {
   Serial.printf("Display is %d x %d\n", display.width(), display.height());
   m_palette = new Palette();

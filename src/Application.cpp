@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "I2SSampler.h"
 #include "I2SMEMSSampler.h"
-#include "ADCSampler.h"
 #include "UI/UI.h"
 #include "Processor.h"
 #include "config.h"
@@ -15,31 +14,24 @@ void processing_task(void *param)
   while (true)
   {
     application->process_samples();
+    vTaskDelay(1);
   }
 }
 
-Application::Application(TFT_eSPI &display)
+Application::Application(TFT_eSPI &display, FT62XXTouchScreen& touchScreen) : m_touchScreen(touchScreen)
 {
   m_window_size = WINDOW_SIZE;
   m_sample_buffer = (int16_t *)malloc(sizeof(int16_t) * WINDOW_SIZE);
   m_ui = new UI(display, m_window_size);
   m_processor = new Processor(m_window_size);
-#ifdef USE_I2S_MIC_INPUT
-  m_sampler = new I2SMEMSSampler(I2S_NUM_0, i2s_mic_pins, i2s_mic_Config);
-#else
-  m_sampler = new ADCSampler(ADC_UNIT_1, ADC_MIC_CHANNEL, i2s_adc_config);
-#endif
-  pinMode(GPIO_BUTTON, INPUT_PULLUP);
+  m_sampler = new I2SMEMSSampler(i2s_mic_pins, i2s_mic_Config);
 }
 
 void Application::begin()
 {
-  // set up the processing
-  TaskHandle_t processing_task_handle;
-  xTaskCreatePinnedToCore(processing_task, "Processing Task", 4096, this, 2, &processing_task_handle, 0);
-
   // start sampling from i2s device
   m_sampler->start();
+  xTaskCreatePinnedToCore(processing_task, "Processing Task", 4096, this, 2, NULL, 0);
 }
 
 void Application::process_samples()
@@ -52,7 +44,8 @@ void Application::process_samples()
 
 void Application::loop()
 {
-  if (digitalRead(GPIO_BUTTON) == 0)
+  TouchPoint touchPos = m_touchScreen.read();
+  if (touchPos.touched)
   {
     m_ui->toggle_display();
     // delay to allow for the touch to finish

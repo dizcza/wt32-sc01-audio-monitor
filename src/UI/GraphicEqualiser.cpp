@@ -66,10 +66,10 @@ void GraphicEqualiser::_draw(TFT_eSPI &display)
     }
     ave /= 4;
     int peak_value = std::min(height, int(0.5f * ave));
-    display.fillRect(x, 0, x_step, height - bar_value - 1, 0);
-    display.drawLine(x, height - peak_value - 1, x + x_step - 1, height - peak_value - 1, m_palette->get_color(135 + peak_value));
-    display.fillRect(x, height - bar_value - 1, x_step - 1, bar_value, m_palette->get_color(135 + bar_value));
+    display.fillRect(x, y, x_step, height - bar_value - 1, 0);
+    display.drawLine(x, y + height - peak_value - 1, x + x_step - 1, y + height - peak_value - 1, m_palette->get_color(135 + peak_value));
+    display.fillRect(x, y + height - bar_value - 1, x_step - 1, bar_value, m_palette->get_color(135 + bar_value));
     x += x_step;
   }
-  display.fillRect(x, 0, width - x, height, 0);
+  display.fillRect(x, y, width - x, height, 0);
 }

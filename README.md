@@ -1,59 +1,34 @@
-# ESP32 Audio Monitor
+# WT32-SC01 INMP441 Audio Monitor
 
-This is a port of this [project](https://github.com/atomic14/m5stack-core2-audio-monitor) to work with any ESP32 device with a TFT display.
+This is a port of atomic14's TFT audio monitor project to work with the WT32-SC01 board.
 
-You can watch a video explainer [here (YouTube)](https://www.youtube.com/watch?v=KaJ4b3HJ3NA) which goes into a bit more detail on the audio capabilities of the device.
 
-[![Demo Video](https://img.youtube.com/vi/KaJ4b3HJ3NA/0.jpg)](https://www.youtube.com/watch?v=KaJ4b3HJ3NA)
+## PCB design
 
-You'll need to use PlatformIO to build the project.
+[wt32-sc01_kicad](./wt32-sc01_kicad)
 
-To clone the repo use:
+As WT32-SC01 pins are 2.0 mm and INMP441 pins are 2.54 mm spaced, it was easier for me to draw the schematics in KiCad v6 and pcb-print it. The Gerber files are there as well.
 
-```
-git clone git@github.com:atomic14/esp32-tft-audio-monitor.git
-```
+It's a one layer board. If you feel that you can pcb-print it by yourself, the tools I used were:
 
-Hopefully, the code should be easy to understand.
+* 0.2d V-shape 30' tool for isolation routing: 2 passes with 30% overlap, 0.08 mm deep.
+* 0.8d drilling mill for PTH excellon.
 
-# Configuration
 
-All the configuration is located in `config.h` please update this to match the pins you are using for your microphone.
+## Screenshots
 
-If you want to use the built in ADC instead of a MEMS microphone then comment out line 16 and connect your analog microphone to pin 32. You will need some kind of microphone amplifier board such as the `MAX4466` or `MAX9814` from Adafruit.
+The PCB design files are a simplified version of what you see in the pic below.
 
-To modify the code to work with your particular device you will need to change the settings in `platformio.ini` to match your TFT. The easiest way to do this is to look in the `lib/TFT_eSPI/User_Setups` for your device and copy the required pre-processor defines.
-
-If you are feeling lazy then you can just copy the setup for you TFT over the `User_Setup.h` and remove the defines from the build settings.
-
-If you take the lazy option, then remember to remove `-DUSER_SETUP_LOADED=1`.
-
-```
-; setup for the TTGO T4
-  -DTFT_WIDTH=135
-  -DTFT_HEIGHT=240
-  -DST7789_DRIVER=1
-  -DCGRAM_OFFSET=1
-  -DTFT_MISO=-1
-  -DTFT_MOSI=19
-  -DTFT_SCLK=18
-  -DTFT_CS=5
-  -DTFT_DC=16
-  -DTFT_RST=23
-  -DTFT_BL=4
-  -DTFT_BACKLIGHT_ON=HIGH
-  -DLOAD_GLCD=1
-  -DLOAD_FONT2=1
-  -DLOAD_FONT4=1
-  -DLOAD_FONT6=1
-  -DLOAD_FONT7=1
-  -DLOAD_FONT8=1
-  -DLOAD_GFXFF=1
-  -DSMOOTH_FONT=1
-  -DSPI_FREQUENCY=40000000
-  -DSPI_READ_FREQUENCY=6000000
-```
-
-# Contributing
-
-If you want to add some more visualisations then please open up a pull request and contribute some code.
+<table style="width:100%">
+    <tr>
+        <td>
+            <img src="screenshots/equalizer.jpg"/>
+        </td>
+		<td>
+            <img src="screenshots/spectrogram.jpg"/>
+        </td>
+        <td>
+            <img src="screenshots/pcb.png"/>
+        </td>
+    </tr>
+</table>

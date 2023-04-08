@@ -46,7 +46,7 @@ void GraphicEqualiser::update(float *mag)
   }
 }
 
-void GraphicEqualiser::_draw(M5Display &display)
+void GraphicEqualiser::_draw(TFT_eSPI &display)
 {
   int x = 0;
   int x_step = int(width / (m_num_bins / 16));

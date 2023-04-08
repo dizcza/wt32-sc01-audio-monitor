@@ -2,7 +2,7 @@
 
 class UI;
 class Processor;
-class M5Display;
+class TFT_eSPI;
 class SDPSampler;
 
 class Application
@@ -17,7 +17,7 @@ private:
   void process_samples();
 
 public:
-  Application(M5Display &display);
+  Application(TFT_eSPI &display);
   void begin();
   void loop();
 

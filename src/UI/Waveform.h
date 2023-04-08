@@ -9,7 +9,7 @@ private:
   int m_num_samples;
 
 public:
-  Waveform(M5Display &display, int x, int y, int width, int height, int num_samples);
+  Waveform(TFT_eSPI &display, int x, int y, int width, int height, int num_samples);
   void update(const float *samples);
-  void _draw(M5Display &display);
+  void _draw(TFT_eSPI &display);
 };

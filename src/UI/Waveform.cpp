@@ -2,7 +2,7 @@
 #include <M5Display.h>
 #include "Waveform.h"
 
-Waveform::Waveform(M5Display &display, int x, int y, int width, int height, int num_samples) : Component(x, y, width, height)
+Waveform::Waveform(TFT_eSPI &display, int x, int y, int width, int height, int num_samples) : Component(x, y, width, height)
 {
   m_num_samples = num_samples;
   m_samples = static_cast<float *>(malloc(sizeof(float) * num_samples));
@@ -13,7 +13,7 @@ void Waveform::update(const float *samples)
   memcpy(m_samples, samples, sizeof(float) * m_num_samples);
 }
 
-void Waveform::_draw(M5Display &display)
+void Waveform::_draw(TFT_eSPI &display)
 {
   float x = 0;
   float x_step = (float)width / (float)m_num_samples;

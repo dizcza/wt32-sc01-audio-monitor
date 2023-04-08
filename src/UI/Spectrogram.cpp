@@ -19,7 +19,7 @@ void Spectrogram::update(float *mag)
   }
 }
 
-void Spectrogram::_draw(M5Display &display)
+void Spectrogram::_draw(TFT_eSPI &display)
 {
   bool swap = display.getSwapBytes();
   display.setSwapBytes(true);

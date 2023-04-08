@@ -22,7 +22,7 @@ void drawing_task(void *param)
   }
 }
 
-UI::UI(M5Display &display, int window_size) : m_display(display)
+UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
 {
   Serial.printf("Display is %d x %d\n", display.width(), display.height());
   m_palette = new Palette();

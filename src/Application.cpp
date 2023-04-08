@@ -17,7 +17,7 @@ void processing_task(void *param)
   }
 }
 
-Application::Application(M5Display &display)
+Application::Application(TFT_eSPI &display)
 {
   m_window_size = WINDOW_SIZE;
   m_sample_buffer = (int16_t *)malloc(sizeof(int16_t) * WINDOW_SIZE);

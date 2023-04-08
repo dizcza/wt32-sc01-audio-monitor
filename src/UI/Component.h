@@ -1,6 +1,6 @@
 #pragma once
 
-class M5Display;
+class TFT_eSPI;
 class Component
 {
 public:
@@ -9,8 +9,8 @@ public:
   Component(int x, int y, int width, int height) : x(x), y(y), width(width), height(height), visible(true)
   {
   }
-  virtual void _draw(M5Display &display) = 0;
-  void draw(M5Display &display)
+  virtual void _draw(TFT_eSPI &display) = 0;
+  void draw(TFT_eSPI &display)
   {
     if (visible)
     {

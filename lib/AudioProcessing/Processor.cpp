@@ -27,7 +27,7 @@ Processor::Processor(int window_size)
   m_energy = static_cast<float *>(malloc(sizeof(float) * window_size / 4));
 }
 
-void Processor::update(int16_t *samples)
+void Processor::update(const int16_t *samples)
 {
   int offset = (m_fft_size - m_window_size) / 2;
   for (int i = 0; i < m_window_size; i++)

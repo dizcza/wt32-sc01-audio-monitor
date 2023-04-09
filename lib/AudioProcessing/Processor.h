@@ -19,5 +19,5 @@ public:
   float *m_fft_input;
 
   Processor(int window_size);
-  void update(int16_t *samples);
+  void update(const int16_t *samples);
 };

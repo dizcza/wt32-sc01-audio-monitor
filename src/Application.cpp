@@ -1,9 +1,9 @@
 #include <M5StX.h>
 #include "Application.h"
-#include "config.h"
+#include "AppConfig.h"
 
 
-Application::Application(TFT_eSPI &display) : m_ui(display, WINDOW_SIZE), m_processor(WINDOW_SIZE), m_sdp_sampler(WINDOW_SIZE)
+Application::Application(TFT_eSPI &display) : m_ui(display, SPECTROGRAM_WINDOW_SIZE), m_processor(SPECTROGRAM_WINDOW_SIZE), m_sdp_sampler()
 {
 }
 
@@ -20,10 +20,9 @@ void Application::stop()
 void Application::process_samples()
 {
   // grab the samples
-  int16_t *samples = m_sdp_sampler.getCapturedAudioBuffer();
+  const int16_t *samples = m_sdp_sampler.getCapturedAudioBuffer();
   if (samples) {
     m_processor.update(samples);
-    free(samples);
     m_ui.update(m_processor.m_fft_input, m_processor.m_energy);
   }
 }

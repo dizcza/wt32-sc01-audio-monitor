@@ -56,19 +56,18 @@ static void sdprecord_read_sensor_task(void* args) {
 
 
 bool SDPSampler::ready() {
-    return uxQueueMessagesWaiting(xQueueRecords) >= m_window_size;
+    return uxQueueMessagesWaiting(xQueueRecords) >= SPECTROGRAM_WINDOW_SIZE;
 }
 
 
-int16_t* SDPSampler::getCapturedAudioBuffer() {
+const int16_t* SDPSampler::getCapturedAudioBuffer() {
     if (!ready()) {
         return NULL;
     }
-    int16_t* buff = (int16_t*) malloc(sizeof(int16_t) * m_window_size);
-    for (int i = 0; i < m_window_size; i++) {
-        xQueueReceive(xQueueRecords, &buff[i], portMAX_DELAY);
+    for (int i = 0; i < SPECTROGRAM_WINDOW_SIZE; i++) {
+        xQueueReceive(xQueueRecords, &raw_buffer[i], portMAX_DELAY);
     }
-    return buff;
+    return raw_buffer;
 }
 
 
@@ -126,7 +125,7 @@ void SDPSampler::stop() {
     }
 }
 
-SDPSampler::SDPSampler(int window_size) : m_window_size(window_size)
+SDPSampler::SDPSampler()
 {
     m_sensor.begin();
     xQueueRecords = xQueueCreate(5000, sizeof(int16_t));

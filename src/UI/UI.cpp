@@ -6,21 +6,6 @@
 #include "UI/GraphicEqualiser.h"
 #include "UI/Spectrogram.h"
 
-// Task to process samples
-void drawing_task(void *param)
-{
-  UI *ui = reinterpret_cast<UI *>(param);
-  const TickType_t xMaxBlockTime = pdMS_TO_TICKS(1000);
-  while (true)
-  {
-    // wait to be told to redraw
-    uint32_t ulNotificationValue = ulTaskNotifyTake(pdTRUE, xMaxBlockTime);
-    if (ulNotificationValue != 0)
-    {
-      ui->draw();
-    }
-  }
-}
 
 UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
 {
@@ -33,8 +18,6 @@ UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
   m_waveform->visible = true;
   m_spectrogram->visible = true;
   m_graphic_equaliser->visible = false;
-  // create a drawing task to update our UI
-  xTaskCreatePinnedToCore(drawing_task, "Drawing Task", 4096, this, 1, &m_draw_task_handle, 1);
 }
 
 void UI::toggle_display()
@@ -48,11 +31,9 @@ void UI::update(float *samples, float *fft)
   m_waveform->update(samples);
   m_graphic_equaliser->update(fft);
   m_spectrogram->update(fft);
-  xTaskNotify(m_draw_task_handle, 1, eIncrement);
+  draw();
 }
 
-unsigned long draw_time = 0;
-int draw_count = 0;
 void UI::draw()
 {
   auto start = millis();
@@ -64,7 +45,7 @@ void UI::draw()
   draw_count++;
   if (draw_count == 20)
   {
-    Serial.printf("Drawing time %ld\n", draw_time / 20);
+    log_d("Drawing time: %ld ms", draw_time / 20);
     draw_count = 0;
     draw_time = 0;
   }

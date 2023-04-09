@@ -100,7 +100,13 @@ void SDPSampler::startTimer()
 }
 
 bool SDPSampler::begin() {
+    // Always stop SDP before running again
+    if (!m_sensor.stopContinuous()) {
+        log_e("stopContinuous failed");
+    }
+    delay(100);
     if (!m_sensor.startContinuous(false)) {
+        log_e("startContinuous failed");
         return false;
     }
     xTaskCreatePinnedToCore(sdprecord_read_sensor_task, "sdp_read", 4096, this, RECORD_READ_SENSOR_PRIORITY, &m_task_read_handle, APP_CPU_NUM);

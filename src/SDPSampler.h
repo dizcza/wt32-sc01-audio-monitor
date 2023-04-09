@@ -7,7 +7,7 @@
 class SDPSampler {
     private:
         int m_window_size;
-        SDP8XX m_sensor = SDP8XX(Address5, DiffPressure, Wire1);
+        SDP8XX m_sensor = SDP8XX(Address5);
         hw_timer_t* m_timer;
         QueueHandle_t xQueueRecords;
 

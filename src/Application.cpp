@@ -1,9 +1,6 @@
 #include <M5StX.h>
 #include "Application.h"
-#include "UI/UI.h"
-#include "Processor.h"
 #include "config.h"
-#include "SDPSampler.h"
 
 
 Application::Application(TFT_eSPI &display) : m_ui(display, WINDOW_SIZE), m_processor(WINDOW_SIZE), m_sdp_sampler(WINDOW_SIZE)

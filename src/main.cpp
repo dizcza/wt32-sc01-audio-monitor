@@ -9,16 +9,30 @@ Application *application;
 void setup()
 {
   ez.begin();
-
-  Wire1.begin(21, 22);
-  Wire1.setClock(400000);
-
   application = new Application(M5.lcd);
-  application->begin();
 }
+
+
+void show_spectrogram() {
+  if (!application->begin()) {
+    ez.msgBox("Spectrogram", "FAILED");
+    return;
+  }
+
+  while (!M5.BtnA.wasPressed()) {
+    application->loop();
+    M5.BtnA.read();
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+
+  application->stop();
+}
+
 
 void loop()
 {
-  // service the application
-  application->loop();
+  ezMenu topmenu("Top Menu");
+  topmenu.buttons("up # select # down");
+  topmenu.addItem("Spectrogram", show_spectrogram); 
+  topmenu.run();
 }

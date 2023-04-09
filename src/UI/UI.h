@@ -14,7 +14,8 @@ private:
   GraphicEqualiser *m_graphic_equaliser;
   Spectrogram *m_spectrogram;
   TFT_eSPI &m_display;
-  TaskHandle_t m_draw_task_handle;
+  unsigned long draw_time = 0;
+  int draw_count = 0;
 
 public:
   UI(TFT_eSPI &display, int window_size);

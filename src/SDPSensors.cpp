@@ -201,6 +201,22 @@ bool SDPSensor::triggerMeasurement(bool stretching) {
     }
 }
 
+
+bool SDPSensor::readPressure(int16_t *pressure) {
+    uint8_t words = 1;  // pressure is one word
+    if (!readData(words)) {
+        return false;
+    }
+    
+    *pressure <<= 8;
+    *pressure |= (int16_t)this->buffer[0];
+    *pressure <<= 8;
+    *pressure |= (int16_t)this->buffer[1];
+
+    return true;
+}
+
+
 /*  Get a pending reading.
 
     This may be used periodically or in a call-back when monitoring interrupts.

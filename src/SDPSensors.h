@@ -173,6 +173,11 @@ class SDPSensor {
         */
         bool readMeasurement(int16_t *pressure, int16_t *temp, int16_t *scale);
 
+        /*  A handy function to read the differential pressure only.
+            Same as readMeasurement(pressure, NULL, NULL).
+        */
+        bool readPressure(int16_t *pressure);
+
         /*  Read back the sensor's internal information
 
             If a serial number is not needed, "serial" should be set to NULL. This will reduce read

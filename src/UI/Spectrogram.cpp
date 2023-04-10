@@ -5,15 +5,11 @@
 #include "Palette.h"
 
 
-static Bitmap bitmap;
-
-
-Spectrogram::Spectrogram(Palette *palette, int x, int y, int width, int height) : Component(x, y, width, height)
+Spectrogram::Spectrogram(Palette *palette, int x, int y, int width, int height) : Component(x, y, width, height), m_palette(palette), bitmap(width, height)
 {
-  m_palette = palette;
 }
 
-void Spectrogram::update(float *mag)
+void Spectrogram::update(const float *mag)
 {
   bitmap.scroll_left();
   for (int i = 0; i < bitmap.height; i++)
@@ -26,6 +22,7 @@ void Spectrogram::_draw(TFT_eSPI &display)
 {
   bool swap = display.getSwapBytes();
   display.setSwapBytes(true);
-  display.pushImage(x, y, bitmap.width, bitmap.height, bitmap.pixels);
+  display.pushImage(x, y, bitmap.width, bitmap.height / 2, bitmap.pixels1);
+  display.pushImage(x, y + bitmap.height / 2, bitmap.width, bitmap.height / 2, bitmap.pixels2);
   display.setSwapBytes(swap);
 }

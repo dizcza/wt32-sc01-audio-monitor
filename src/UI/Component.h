@@ -10,6 +10,7 @@ public:
   {
   }
   virtual void _draw(TFT_eSPI &display) = 0;
+  virtual void update(const float *data) = 0;
   void draw(TFT_eSPI &display)
   {
     if (visible)

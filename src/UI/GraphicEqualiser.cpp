@@ -22,7 +22,7 @@ GraphicEqualiser::GraphicEqualiser(Palette *palette, int x, int y, int width, in
   }
 }
 
-void GraphicEqualiser::update(float *mag)
+void GraphicEqualiser::update(const float *mag)
 {
   for (int i = 0; i < m_num_bins; i++)
   {

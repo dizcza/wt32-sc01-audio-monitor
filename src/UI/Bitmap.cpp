@@ -1,19 +1,21 @@
 #include "Arduino.h"
 #include "Bitmap.h"
 
-Bitmap::Bitmap()
+uint16_t* Bitmap::alloc_half_size() {
+  uint16_t *pixels = (uint16_t*) calloc(width * height / 2, sizeof(uint16_t));
+  assert(pixels != NULL);
+  return pixels;
+}
+
+Bitmap::Bitmap(uint16_t a_width, uint16_t a_height) : width(a_width), height(a_height)
 {
-  memset(pixels, 0, sizeof(pixels));
-  for (int i = 0; i < height; i++)
+  pixels1 = alloc_half_size();
+  pixels2 = alloc_half_size();
+  rows = (uint16_t**) malloc(sizeof(uint16_t*) * height);
+  for (int i = 0; i < height / 2; i++)
   {
-    rows[i] = pixels + width * i;
-  }
-  for (int y = 0; y < height; y++)
-  {
-    for (int x = 0; x < width; x++)
-    {
-      rows[y][x] = 0;
-    }
+    rows[i] = pixels1 + width * i;
+    rows[i + height / 2] = pixels2 + width * i;
   }
 }
 

@@ -4,12 +4,13 @@
 #include "Application.h"
 
 Application *application;
+SDP8XX sensor = SDP8XX(Address5);
 
 
 void setup()
 {
   ez.begin();
-  application = new Application(M5.lcd);
+  application = new Application(M5.lcd, sensor);
 }
 
 

@@ -15,7 +15,7 @@ private:
   void process_samples();
 
 public:
-  Application(TFT_eSPI &display);
+  Application(TFT_eSPI &display, SDPSensor& sensor);
   bool begin();
   void stop();
   void loop();

@@ -1,18 +1,19 @@
 #pragma once
 
-class Palette;
-class Waveform;
-class GraphicEqualiser;
-class Spectrogram;
+#include "Palette.h"
+#include "Waveform.h"
+#include "Spectrogram.h"
+#include "GraphicEqualiser.h"
+
 class TFT_eSPI;
 
 class UI
 {
 private:
-  Palette *m_palette;
-  Waveform *m_waveform;
-  GraphicEqualiser *m_graphic_equaliser;
-  Spectrogram *m_spectrogram;
+  Palette m_palette;
+  Waveform m_waveform;
+  GraphicEqualiser m_graphic_equaliser;
+  Spectrogram m_spectrogram;
   TFT_eSPI &m_display;
   unsigned long draw_time = 0;
   int draw_count = 0;

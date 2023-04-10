@@ -2,17 +2,17 @@
 
 #include "Component.h"
 #include "Bitmap.h"
+#include "Palette.h"
 
-class Palette;
 
 class Spectrogram : public Component
 {
 private:
-  Palette *m_palette;
+  const Palette &m_palette;
   Bitmap bitmap;
 
 public:
-  Spectrogram(Palette *palette, int x, int y, int width, int height);
+  Spectrogram(const Palette &palette, int x, int y, int width, int height);
   void update(const float *magnitudes);
   void _draw(TFT_eSPI &display);
 };

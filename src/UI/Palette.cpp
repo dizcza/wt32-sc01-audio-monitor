@@ -6,7 +6,6 @@ uint16_t rgb_to_uint16(float r, float g, float b)
   int ri = (int)(r * 31.0f);
   int gi = (int)(g * 63.0f);
   int bi = (int)(b * 31.0f);
-  // Serial.printf("%d %d %d\n", ri, gi, bi);
   return (ri << 11) | (gi << 5) | bi;
 }
 

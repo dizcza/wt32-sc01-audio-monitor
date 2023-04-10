@@ -12,7 +12,7 @@ protected:
 
 public:
   Palette();
-  inline uint16_t get_color(int index)
+  uint16_t get_color(int index) const
   {
     return colors[std::max(0, std::min(255, index))];
   }

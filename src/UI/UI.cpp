@@ -7,39 +7,38 @@
 #include "UI/Spectrogram.h"
 
 
-UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
+UI::UI(TFT_eSPI &display, int window_size) : m_display(display),
+  m_waveform(display, 0, 0, display.width(), display.height() / 2, window_size),
+  m_graphic_equaliser(m_palette, 0, display.height() / 2, display.width(), display.height() / 2, window_size),
+  m_spectrogram(m_palette, 0, 0, display.width(), display.height())
 {
-  Serial.printf("Display is %d x %d\n", display.width(), display.height());
-  m_palette = new Palette();
-  m_waveform = new Waveform(display, 0, 0, display.width(), display.height() / 2, window_size);
-  m_graphic_equaliser = new GraphicEqualiser(m_palette, 0, display.height() / 2, display.width(), display.height() / 2, window_size);
-  m_spectrogram = new Spectrogram(m_palette, 0, 0, display.width(), display.height());
-  m_waveform->visible = false;
-  m_graphic_equaliser->visible = false;
-  m_spectrogram->visible = true;
+  log_d("Display is %d x %d\n", display.width(), display.height());
+  m_waveform.visible = false;
+  m_graphic_equaliser.visible = false;
+  m_spectrogram.visible = true;
 }
 
 void UI::toggle_display()
 {
-  m_waveform->visible = !m_waveform->visible;
-  m_graphic_equaliser->visible = !m_graphic_equaliser->visible;
-  m_spectrogram->visible = !m_spectrogram->visible;
+  m_waveform.visible = !m_waveform.visible;
+  m_graphic_equaliser.visible = !m_graphic_equaliser.visible;
+  m_spectrogram.visible = !m_spectrogram.visible;
 }
 
 void UI::update(float *samples, float *fft)
 {
-  m_waveform->update(samples);
-  m_graphic_equaliser->update(fft);
-  m_spectrogram->update(fft);
+  m_waveform.update(samples);
+  m_graphic_equaliser.update(fft);
+  m_spectrogram.update(fft);
   draw();
 }
 
 void UI::draw()
 {
   auto start = millis();
-  m_spectrogram->draw(m_display);
-  m_graphic_equaliser->draw(m_display);
-  m_waveform->draw(m_display);
+  m_spectrogram.draw(m_display);
+  m_graphic_equaliser.draw(m_display);
+  m_waveform.draw(m_display);
   auto end = millis();
   draw_time += end - start;
   draw_count++;

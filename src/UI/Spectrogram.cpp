@@ -5,7 +5,7 @@
 #include "Palette.h"
 
 
-Spectrogram::Spectrogram(Palette *palette, int x, int y, int width, int height) : Component(x, y, width, height), m_palette(palette), bitmap(width, height)
+Spectrogram::Spectrogram(const Palette &palette, int x, int y, int width, int height) : Component(x, y, width, height), m_palette(palette), bitmap(width, height)
 {
 }
 
@@ -14,7 +14,7 @@ void Spectrogram::update(const float *mag)
   bitmap.scroll_left();
   for (int i = 0; i < bitmap.height; i++)
   {
-    bitmap.rows[bitmap.height - i - 1][bitmap.width - 1] = m_palette->get_color(mag[i]);
+    bitmap.rows[bitmap.height - i - 1][bitmap.width - 1] = m_palette.get_color(mag[i]);
   }
 }
 

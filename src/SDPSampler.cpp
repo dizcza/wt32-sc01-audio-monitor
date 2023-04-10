@@ -103,7 +103,6 @@ bool SDPSampler::begin() {
     if (!m_sensor.stopContinuous()) {
         log_e("SDPSensor::stopContinuous failed");
     }
-    delay(20);
     if (!m_sensor.startContinuous(false)) {
         log_e("SDPSensor::startContinuous failed");
         return false;

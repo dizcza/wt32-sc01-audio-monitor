@@ -10,20 +10,21 @@ SDP8XX sensor = SDP8XX(Address5);
 void setup()
 {
   ez.begin();
+  log_d("Heap avail after ez.begin: %lu Kb", esp_get_free_heap_size() / 1024);
   application = new Application(M5.lcd, sensor);
 }
 
 
 void show_spectrogram() {
   if (!application->begin()) {
-    ez.msgBox("Spectrogram", "FAILED");
     return;
   }
+  log_d("Heap avail: %lu Kb", esp_get_free_heap_size() / 1024);
 
   while (!M5.BtnA.wasPressed()) {
     application->loop();
     M5.BtnA.read();
-    vTaskDelay(pdMS_TO_TICKS(10));
+    // you can add a ~100 ms delay here
   }
 
   application->stop();

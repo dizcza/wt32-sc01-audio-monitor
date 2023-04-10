@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include "SDPSensors.h"
-#include "AppConfig.h"
+#include "SpectrogramConfig.h"
 
 
 class SDPSampler {

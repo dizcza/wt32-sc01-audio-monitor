@@ -13,16 +13,17 @@ UI::UI(TFT_eSPI &display, int window_size) : m_display(display)
   m_palette = new Palette();
   m_waveform = new Waveform(display, 0, 0, display.width(), display.height() / 2, window_size);
   m_graphic_equaliser = new GraphicEqualiser(m_palette, 0, display.height() / 2, display.width(), display.height() / 2, window_size);
-  m_spectrogram = new Spectrogram(m_palette, 0, display.height() / 2, display.width(), display.height() / 2);
+  m_spectrogram = new Spectrogram(m_palette, 0, 0, display.width(), display.height() / 2);
   // start off with the spectrogram hidden
-  m_waveform->visible = true;
-  m_spectrogram->visible = true;
+  m_waveform->visible = false;
   m_graphic_equaliser->visible = false;
+  m_spectrogram->visible = true;
 }
 
 void UI::toggle_display()
 {
   m_graphic_equaliser->visible = !m_graphic_equaliser->visible;
+  m_waveform->visible = !m_waveform->visible;
   m_spectrogram->visible = !m_spectrogram->visible;
 }
 

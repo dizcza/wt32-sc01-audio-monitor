@@ -1,10 +1,11 @@
 #include <M5StX.h>
 #include "Application.h"
-#include "AppConfig.h"
+#include "SpectrogramConfig.h"
 
 
 Application::Application(TFT_eSPI &display, SDPSensor& sensor) : m_ui(display, SPECTROGRAM_WINDOW_SIZE), m_processor(SPECTROGRAM_WINDOW_SIZE), m_sdp_sampler(sensor)
 {
+  log_d("Heap avail after init: %lu Kb", esp_get_free_heap_size() / 1024);
 }
 
 bool Application::begin()

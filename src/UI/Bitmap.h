@@ -1,13 +1,15 @@
 #pragma once
 #include <stdint.h>
 
+#include <M5StX.h>
+
 class Bitmap
 {
 public:
-  uint16_t *pixels;
-  uint16_t **rows;
-  uint16_t width;
-  uint16_t height;
-  Bitmap(int width, int height);
+  static constexpr uint16_t width = TFT_WIDTH;
+  static constexpr uint16_t height = TFT_HEIGHT / 2;
+  uint16_t pixels[width * height];
+  uint16_t *rows[height];
+  Bitmap();
   void scroll_left();
 };

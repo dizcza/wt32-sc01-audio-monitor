@@ -7,9 +7,9 @@
 #include "UI/Spectrogram.h"
 
 
-UI::UI(TFT_eSPI &display, int window_size) : m_display(display),
+UI::UI(TFT_eSPI &display, int window_size, int n_chunks) : m_display(display),
   m_waveform(display, 0, 0, display.width(), display.height() / 2, window_size),
-  m_graphic_equaliser(m_palette, 0, display.height() / 2, display.width(), display.height() / 2, window_size),
+  m_graphic_equaliser(m_palette, 0, display.height() / 2, display.width(), display.height() / 2, window_size * n_chunks / 2),
   m_spectrogram(m_palette, 0, 0, display.width(), display.height())
 {
   log_d("Display is %d x %d\n", display.width(), display.height());

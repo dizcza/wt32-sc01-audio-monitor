@@ -3,7 +3,7 @@
 #include "SpectrogramConfig.h"
 
 
-Application::Application(TFT_eSPI &display, SDPSensor& sensor) : m_ui(display, SPECTROGRAM_WINDOW_SIZE), m_processor(SPECTROGRAM_WINDOW_SIZE), m_sdp_sampler(sensor)
+Application::Application(TFT_eSPI &display, SDPSensor& sensor) : m_ui(display, SPECTROGRAM_WINDOW_SIZE, SPECTROGRAM_HISTORY_CHUNKS), m_processor(SPECTROGRAM_WINDOW_SIZE, SPECTROGRAM_HISTORY_CHUNKS), m_sdp_sampler(sensor)
 {
 }
 

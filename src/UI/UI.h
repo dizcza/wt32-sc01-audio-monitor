@@ -19,7 +19,7 @@ private:
   int draw_count = 0;
 
 public:
-  UI(TFT_eSPI &display, int window_size);
+  UI(TFT_eSPI &display, int window_size, int n_chunks);
   void toggle_display();
   void update(const float *samples, const float *fft, int fft_size);
   void draw();

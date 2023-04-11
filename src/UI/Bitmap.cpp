@@ -21,7 +21,7 @@ Bitmap::Bitmap(uint16_t a_width, uint16_t a_height) : width(a_width), height(a_h
 
 void Bitmap::scroll_left()
 {
-  for (int y = 0; y < height; y++)
+  for (int y = 0; y < height - 1; y++)
   {
     memmove(rows[y], rows[y] + 1, this->width * sizeof(uint16_t) - 1);
   }

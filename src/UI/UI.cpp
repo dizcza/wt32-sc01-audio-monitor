@@ -25,11 +25,11 @@ void UI::toggle_display()
   m_spectrogram.visible = !m_spectrogram.visible;
 }
 
-void UI::update(float *samples, float *fft)
+void UI::update(const float *samples, const float *fft, int fft_size)
 {
   m_waveform.update(samples);
-  m_graphic_equaliser.update(fft);
-  m_spectrogram.update(fft);
+  m_graphic_equaliser.update(fft, fft_size);
+  m_spectrogram.update(fft, fft_size);
   draw();
 }
 

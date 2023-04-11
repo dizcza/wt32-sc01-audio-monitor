@@ -21,11 +21,11 @@ GraphicEqualiser::GraphicEqualiser(const Palette &palette, int x, int y, int wid
   }
 }
 
-void GraphicEqualiser::update(const float *mag)
+void GraphicEqualiser::update(const float *magnitudes, int size)
 {
   for (int i = 0; i < m_num_bins; i++)
   {
-    float m = mag[i];
+    float m = magnitudes[i];
     if (m > bar_chart[i])
     {
       bar_chart[i] = m;

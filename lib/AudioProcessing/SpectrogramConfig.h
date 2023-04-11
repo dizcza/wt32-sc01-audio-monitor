@@ -1,3 +1,6 @@
 #pragma once
 
-#define SPECTROGRAM_WINDOW_SIZE 512
+/**
+ * Must be a power of 2.
+*/
+#define SPECTROGRAM_WINDOW_SIZE 256

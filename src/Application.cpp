@@ -23,7 +23,7 @@ void Application::process_samples()
   const int16_t *samples = m_sdp_sampler.getCapturedAudioBuffer();
   if (samples) {
     m_processor.update(samples);
-    m_ui.update(m_processor.m_fft_input, m_processor.m_energy);
+    m_ui.update(m_processor.fft_input, m_processor.energy, m_processor.energy_size);
   }
 }
 

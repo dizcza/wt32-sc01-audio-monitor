@@ -21,7 +21,7 @@ private:
 public:
   UI(TFT_eSPI &display, int window_size);
   void toggle_display();
-  void update(float *samples, float *fft);
+  void update(const float *samples, const float *fft, int fft_size);
   void draw();
   friend void drawing_task(void *param);
 };

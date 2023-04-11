@@ -2,9 +2,8 @@
 #include <math.h>
 #include "HammingWindow.h"
 
-HammingWindow::HammingWindow(int window_size)
+HammingWindow::HammingWindow(int window_size) : m_window_size(window_size)
 {
-    m_window_size = window_size;
     m_coefficients = static_cast<float *>(malloc(sizeof(float) * m_window_size));
     // create the constants for a hamming window
     const float arg = M_PI * 2.0 / window_size;
@@ -25,6 +24,6 @@ void HammingWindow::applyWindow(float *input)
 {
     for (int i = 0; i < m_window_size; i++)
     {
-        input[i] = input[i] * m_coefficients[i];
+        input[i] *= m_coefficients[i];
     }
 }

@@ -55,19 +55,15 @@ static void sdprecord_read_sensor_task(void* args) {
 }
 
 
-bool SDPSampler::ready() {
-    return uxQueueMessagesWaiting(xQueueRecords) >= SPECTROGRAM_WINDOW_SIZE;
-}
-
-
-const int16_t* SDPSampler::getCapturedAudioBuffer() {
-    if (!ready()) {
-        return NULL;
+const float* SDPSampler::getCapturedAudioBuffer(int *size) {
+    int16_t dp_raw;
+    int i = 0;
+    for (; (i < SDPSAMPLER_BUFFER_MAX_SIZE) && uxQueueMessagesWaiting(xQueueRecords); i++) {
+        xQueueReceive(xQueueRecords, &dp_raw, portMAX_DELAY);
+        diff_pressure_buffer[i] = ((float) dp_raw) / pressure_scale;
     }
-    for (int i = 0; i < SPECTROGRAM_WINDOW_SIZE; i++) {
-        xQueueReceive(xQueueRecords, &raw_buffer[i], portMAX_DELAY);
-    }
-    return raw_buffer;
+    *size = i;
+    return diff_pressure_buffer;
 }
 
 
@@ -88,7 +84,10 @@ bool SDPSampler::readSensor() {
 void SDPSampler::startTimer()
 {
     m_timer = timerBegin(0, 80, true);
-    timerAttachInterrupt(m_timer, &onTimer, true);
+
+    // Edge interrupt (3rd parameter) is not supported.
+    // Setting to false.
+    timerAttachInterrupt(m_timer, &onTimer, false);
 
     // Set alarm to call onTimer function every second (value in microseconds).
     // Repeat the alarm (third parameter)
@@ -99,10 +98,6 @@ void SDPSampler::startTimer()
 }
 
 bool SDPSampler::begin() {
-    // Always stop SDP before running again
-    if (!m_sensor.stopContinuous()) {
-        log_e("SDPSensor::stopContinuous failed");
-    }
     if (!m_sensor.startContinuous(false)) {
         log_e("SDPSensor::startContinuous failed");
         return false;
@@ -127,6 +122,8 @@ void SDPSampler::stop() {
 SDPSampler::SDPSampler(SDPSensor& sensor) : m_sensor(sensor)
 {
     m_sensor.begin();
+    pressure_scale = m_sensor.getPressureScale();
+    log_d("SDP pressure scale: %d", pressure_scale);
     xQueueRecords = xQueueCreate(5000, sizeof(int16_t));
     assert(xQueueRecords != NULL);
 }

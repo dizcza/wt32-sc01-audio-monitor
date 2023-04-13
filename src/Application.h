@@ -19,6 +19,4 @@ public:
   bool begin();
   void stop();
   void loop();
-
-  friend void processing_task(void *param);
 };

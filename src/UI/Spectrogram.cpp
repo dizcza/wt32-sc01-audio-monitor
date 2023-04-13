@@ -11,15 +11,20 @@ Spectrogram::Spectrogram(const Palette &palette, int x, int y, int width, int he
 {
 }
 
-void Spectrogram::update(const float *magnitudes, int size)
+void Spectrogram::update(const float *magnitudes, int size, bool detected)
 {
   bitmap.scroll_left();
   const float fft_id_scale = ((float) size) / bitmap.height;
+  const int level_event = int(0.8 * bitmap.height);
   for (int i = 0; i < bitmap.height; i++)
   {
-    int fft_id = (int) (i * fft_id_scale);
-    int color_id = (int) magnitudes[fft_id];
-    bitmap.rows[bitmap.height - i - 1][bitmap.width - 1] = m_palette.get_color(color_id);
+    if (detected && i > level_event) {
+      bitmap.rows[bitmap.height - i - 1][bitmap.width - 1] = Palette::white;
+    } else {
+      int fft_id = (int) (i * fft_id_scale);
+      int color_id = (int) magnitudes[fft_id];
+      bitmap.rows[bitmap.height - i - 1][bitmap.width - 1] = m_palette.get_color(color_id);
+    }
   }
 }
 

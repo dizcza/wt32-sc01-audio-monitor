@@ -13,6 +13,6 @@ private:
 
 public:
   Spectrogram(const Palette &palette, int x, int y, int width, int height);
-  void update(const float *magnitudes, int size);
+  void update(const float *magnitudes, int size, bool detected);
   void _draw(TFT_eSPI &display);
 };

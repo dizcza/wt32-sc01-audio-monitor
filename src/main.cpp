@@ -24,7 +24,7 @@ void show_spectrogram() {
   while (!M5.BtnA.wasPressed()) {
     application->loop();
     M5.BtnA.read();
-    // you can add a ~100 ms delay here
+    delay(100);
   }
 
   application->stop();

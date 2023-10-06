@@ -4,14 +4,12 @@
 #include "Application.h"
 
 Application *application;
-SDP8XX sensor = SDP8XX(Address5);
-
 
 void setup()
 {
   ez.begin();
   log_d("Heap avail after ez.begin: %lu Kb", esp_get_free_heap_size() / 1024);
-  application = new Application(M5.lcd, sensor);
+  application = new Application(M5.lcd);
 }
 
 

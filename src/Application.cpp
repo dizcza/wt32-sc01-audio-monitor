@@ -3,9 +3,8 @@
 #include "SpectrogramConfig.h"
 
 
-Application::Application(TFT_eSPI &display, SDPSensor& sensor) :
+Application::Application(TFT_eSPI &display) :
   m_ui(display, SPECTROGRAM_WINDOW_SIZE),
-  m_sdp_sampler(sensor),
   m_processor(SPECTROGRAM_WINDOW_SIZE, m_sdp_sampler.pressure_scale)
 {
 }

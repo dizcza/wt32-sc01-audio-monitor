@@ -91,14 +91,14 @@ void SDPSampler::startTimer()
 
     // Set alarm to call onTimer function every second (value in microseconds).
     // Repeat the alarm (third parameter)
-    timerAlarmWrite(m_timer, 1000000 / 1024, true);
+    timerAlarmWrite(m_timer, 1000000 / m_sensor.getSamplingFreq(), true);
 
     // Start an alarm
     timerAlarmEnable(m_timer);
 }
 
 bool SDPSampler::begin() {
-    if (!m_sensor.startContinuous(false)) {
+    if (!m_sensor.startContinuous()) {
         log_e("SDPSensor::startContinuous failed");
         return false;
     }
@@ -119,7 +119,7 @@ void SDPSampler::stop() {
     }
 }
 
-SDPSampler::SDPSampler(SDPSensor& sensor) : m_sensor(sensor)
+SDPSampler::SDPSampler()
 {
     m_sensor.begin();
     pressure_scale = m_sensor.getPressureScale();

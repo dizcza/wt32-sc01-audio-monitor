@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
-#include "SDPSensors.h"
+#include "PressureSensor.h"
 #include "SpectrogramConfig.h"
 
 
@@ -10,7 +10,7 @@
 
 class SDPSampler {
     private:
-        SDPSensor& m_sensor;
+        PressureSensor m_sensor;
         hw_timer_t* m_timer;
         QueueHandle_t xQueueRecords;
         float diff_pressure_buffer[SDPSAMPLER_BUFFER_MAX_SIZE];
@@ -18,7 +18,7 @@ class SDPSampler {
     public:
         uint8_t pressure_scale;
 
-        SDPSampler(SDPSensor& sensor);
+        SDPSampler();
         bool begin();
         void stop();
         void startTimer();

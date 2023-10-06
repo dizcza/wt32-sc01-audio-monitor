@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include "SDPSensors.h"
+#include "dlvr.h"
 
 
 typedef enum { MANUFACTURER_NONE, MANUFACTURER_SDP, MANUFACTURER_DLVR } Manufacturer;
@@ -11,7 +12,8 @@ class PressureSensor {
     private:
         Manufacturer mfr = MANUFACTURER_NONE;
         TwoWire &wire;
-        SDP8XX *sdp_sensor;
+        SDPSensor *sdp_sensor = NULL;
+        DLVR *dlvr_sensor = NULL;
         bool ping(uint8_t addr);
 
     public:

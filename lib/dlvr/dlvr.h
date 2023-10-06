@@ -8,12 +8,8 @@
 #ifndef COMPONENTS_DLVR_DLVR_H_
 #define COMPONENTS_DLVR_DLVR_H_
 
-#include "driver/i2c.h"
+#include <Wire.h>
 
-
-#ifdef __cplusplus
- extern "C" {
-#endif
 
 #define DLVR_I2C_ADDR            (0x28)
 
@@ -23,16 +19,16 @@
 #define DLVR_SDP_PRESSURE_SCALE  (240)
 
 
-void dlvr_init(i2c_port_t i2c_port);
+class DLVR {
+    private:
+        TwoWire &wire;
+        uint8_t addr = DLVR_I2C_ADDR;
 
-esp_err_t dlvr_read_pressure_sdp(int16_t* diff_pressure_sdp);
+    public:
+        DLVR(TwoWire &wirePort = Wire);
+        bool readPressure(int16_t *pressure);
+        uint8_t getPressureScale();
+};
 
-esp_err_t dlvr_read_pressure_raw(uint16_t* diff_pressure_raw);
-
-esp_err_t dlvr_read_pressure_temperature(float* diff_pressure, float* temperature);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* COMPONENTS_DLVR_DLVR_H_ */

@@ -1,5 +1,4 @@
 #include "PressureSensor.h"
-#include "dlvr.h"
 
 
 PressureSensor::PressureSensor(TwoWire &wirePort) : wire(wirePort) {};
@@ -15,13 +14,19 @@ bool PressureSensor::ping(uint8_t addr) {
 
 PressureRange PressureSensor::begin() {
     if (this->ping(DLVR_I2C_ADDR)) {
+        log_i("Found DLVR sensor");
         mfr = MANUFACTURER_DLVR;
-        dlvr_init((i2c_port_t) 0);
+        dlvr_sensor = new DLVR(wire);
         return SDP_125;
     }
-    sdp_sensor = new SDP8XX(Address5);
+    sdp_sensor = new SDP8XX(Address5, DiffPressure, wire);
     PressureRange prange = sdp_sensor->begin();
-    mfr = prange == SDP_NA ? MANUFACTURER_NONE : MANUFACTURER_SDP;
+    if (prange == SDP_NA) {
+        log_e("No sensor found");
+    } else {
+        mfr = MANUFACTURER_SDP;
+        log_i("Found SDP8xx sensor");
+    }
     return prange;
 }
 
@@ -29,6 +34,9 @@ PressureRange PressureSensor::begin() {
 PressureSensor::~PressureSensor() {
     if (sdp_sensor != NULL) {
         delete sdp_sensor;
+    }
+    if (dlvr_sensor != NULL) {
+        delete dlvr_sensor;
     }
 }
 
@@ -52,18 +60,37 @@ bool PressureSensor::stopContinuous() {
 
 
 bool PressureSensor::readPressure(int16_t *pressure) {
-    if (sdp_sensor != NULL) {
-        return sdp_sensor->readPressure(pressure);
+    bool res;
+    switch (mfr)
+    {
+    case MANUFACTURER_SDP:
+        res = sdp_sensor->readPressure(pressure);
+        break;
+    case MANUFACTURER_DLVR:
+        res = dlvr_sensor->readPressure(pressure);
+        break;
+    default:
+        res = false;
+        break;
     }
-    return dlvr_read_pressure_sdp(pressure) == ESP_OK;
+    return res;
 }
 
 
 uint8_t PressureSensor::getPressureScale() {
-    if (sdp_sensor != NULL) {
-        return sdp_sensor->getPressureScale();
+    uint8_t scale = 0;
+    switch (mfr)
+    {
+    case MANUFACTURER_SDP:
+        scale = sdp_sensor->getPressureScale();
+        break;
+    case MANUFACTURER_DLVR:
+        scale = dlvr_sensor->getPressureScale();
+        break;
+    default:
+        break;
     }
-    return DLVR_SDP_PRESSURE_SCALE;
+    return scale;
 }
 
 

@@ -57,10 +57,14 @@ static void sdprecord_read_sensor_task(void* args) {
 
 const float* SDPSampler::getCapturedAudioBuffer(int *size) {
     int16_t dp_raw;
+    float dp;
     int i = 0;
     for (; (i < SDPSAMPLER_BUFFER_MAX_SIZE) && uxQueueMessagesWaiting(xQueueRecords); i++) {
         xQueueReceive(xQueueRecords, &dp_raw, portMAX_DELAY);
-        diff_pressure_buffer[i] = ((float) dp_raw) / pressure_scale;
+        dp = ((float) dp_raw) / pressure_scale;
+        OnlineMean_Update(&oMean, dp);
+        dp -= oMean.mean;
+        diff_pressure_buffer[i] = dp;
     }
     *size = i;
     return diff_pressure_buffer;
@@ -126,4 +130,5 @@ SDPSampler::SDPSampler()
     log_d("SDP pressure scale: %d", pressure_scale);
     xQueueRecords = xQueueCreate(5000, sizeof(int16_t));
     assert(xQueueRecords != NULL);
+    OnlineMean_Init(&oMean);
 }
